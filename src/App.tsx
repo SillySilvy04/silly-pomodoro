@@ -3,12 +3,17 @@ import './styles/global.css';
 
 import { Container } from './components/Container';
 import { Heading } from './components/Heading';
+import { Logo } from './components/Logo';
 
 export function App() {
   return (
     <>
       <Container>
-        <Heading>teste</Heading>
+        <Logo></Logo>
+      </Container>
+
+      <Container>
+        <Heading>Pomocoiso</Heading>
       </Container>
     </>
   );
