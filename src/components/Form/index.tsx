@@ -1,6 +1,7 @@
 import style from './style.module.css';
 
 import { DefaultInput } from '../DefaultInput';
+import { Cycles } from '../Cycles';
 
 export function Form() {
   return (
@@ -18,8 +19,7 @@ export function Form() {
       </div>
 
       <div className={style.formRow}>
-        <p className={style.formRow}>Ciclos</p>
-        <p className={style.formRow}>0 0 0 0 0 0</p>
+        <Cycles></Cycles>
         <button className={style.formRow}>Enviar</button>
       </div>
     </form>
