@@ -2,7 +2,12 @@ import './styles/theme.css';
 import './styles/global.css';
 
 import { Home } from './pages/home';
+import { TaskContextProvider } from './contexts/TaskContext/useTaskContext';
 
 export function App() {
-  return <Home />;
+  return (
+    <TaskContextProvider>
+      <Home />
+    </TaskContextProvider>
+  );
 }
