@@ -3,20 +3,18 @@ import style from './style.module.css';
 import { DefaultInput } from '../DefaultInput';
 import { Cycles } from '../Cycles';
 import { DefaultButton } from '../DefaultButton';
-import { PlayCircleIcon } from 'lucide-react';
-import { useRef } from 'react';
+import { PlayCircleIcon, StopCircleIcon } from 'lucide-react';
+import React, { useRef } from 'react';
 import type { TaskModel } from '../../models/TaskModel';
 import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
-import { getNextCycle } from '../../utils/getNextCycle';
 import { getNextCycleType } from '../../utils/getNextCycleType';
-import { formatSecondsToMinutes } from '../../utils/formatSecondsToMinutes';
+import { TaskActionTypes } from '../../contexts/TaskContext/taskAction';
 
 export function Form() {
-  const { state, setState } = useTaskContext();
+  const { state, dispatch } = useTaskContext();
   const taskNameInput = useRef<HTMLInputElement>(null);
 
   //definição de ciclos
-  const nextCycle = getNextCycle(state.currentCycle);
   const nextCycleType = getNextCycleType(state.currentCycle);
 
   function handleCreateNewTask(event: React.FormEvent<HTMLFormElement>) {
@@ -41,19 +39,14 @@ export function Form() {
       type: nextCycleType,
     };
 
-    const secondsRemaining = newTask.duration * 60;
+    dispatch({ type: TaskActionTypes.START_TASK, payload: newTask });
+  }
 
-    setState(prevState => {
-      return {
-        ...prevState,
-        config: { ...prevState.config },
-        activeTask: newTask,
-        currentCycle: nextCycle,
-        secondsRemaining,
-        formattedSecondsRemaining: formatSecondsToMinutes(secondsRemaining),
-        tasks: [...prevState.tasks, newTask],
-      };
-    });
+  function handleStopCurrentTask(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) {
+    e.preventDefault();
+    dispatch({ type: TaskActionTypes.INTERRUPT_TASK });
   }
 
   return (
@@ -79,7 +72,25 @@ export function Form() {
       )}
 
       <div className={style.formRow}>
-        <DefaultButton icon={<PlayCircleIcon />} color='green' />
+        {!state.activeTask ? (
+          <DefaultButton
+            aria-label='iniciar nova tarefa'
+            title='iniciar nova tarefa'
+            type='submit'
+            icon={<PlayCircleIcon />}
+            color='green'
+            key='submit_button'
+          />
+        ) : (
+          <DefaultButton
+            aria-label='encerrar nova tarefa'
+            title='encerrar nova tarefa'
+            type='button'
+            icon={<StopCircleIcon />}
+            color='red'
+            onClick={handleStopCurrentTask}
+          />
+        )}
       </div>
     </form>
   );
