@@ -9,13 +9,14 @@ import type { TaskModel } from '../../models/TaskModel';
 import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
 import { getNextCycleType } from '../../utils/getNextCycleType';
 import { TaskActionTypes } from '../../contexts/TaskContext/taskAction';
+import { Tips } from '../Tips';
 
 export function Form() {
   const { state, dispatch } = useTaskContext();
   const taskNameInput = useRef<HTMLInputElement>(null);
 
   //definição de ciclos
-  const nextCycleType = getNextCycleType(state.currentCycle);
+  const nextCycleType = getNextCycleType(state.currentCycle + 1);
 
   function handleCreateNewTask(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -42,10 +43,7 @@ export function Form() {
     dispatch({ type: TaskActionTypes.START_TASK, payload: newTask });
   }
 
-  function handleStopCurrentTask(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) {
-    e.preventDefault();
+  function handleStopCurrentTask() {
     dispatch({ type: TaskActionTypes.INTERRUPT_TASK });
   }
 
@@ -62,7 +60,7 @@ export function Form() {
       </div>
 
       <div className={style.formRow}>
-        <p>Lorem ipsum dolor sit amet.</p>
+        <Tips></Tips>
       </div>
 
       {state.currentCycle > 0 && (
