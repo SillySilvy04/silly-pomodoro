@@ -39,6 +39,8 @@ export function TaskContextProvider({ children }: TextContextProviderProps) {
       worker.terminate();
     }
 
+    document.title = `${state.formattedSecondsRemaining} - silly-pomodoro`;
+
     worker.postMessage(state);
   }, [worker, state]);
 
