@@ -1,4 +1,4 @@
-import style from './GenericHtml.module.css';
+import style from './style.module.css';
 
 type GenericHtmlProps = {
   children: React.ReactNode;
