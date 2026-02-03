@@ -1,8 +1,9 @@
-import { useReducer, useEffect } from 'react';
+import { useReducer, useEffect, useRef } from 'react';
 import { initialTaskState } from './initialTaskState';
 import { taskReducer } from './taskReducer';
 import { TaskContext } from './TaskContext';
 import { TimerWorkerManager } from '../../workers/TimerWorkerManager';
+import { loadBeep } from '../../utils/loadBeep';
 
 type TextContextProviderProps = {
   children: React.ReactNode;
@@ -10,13 +11,19 @@ type TextContextProviderProps = {
 
 export function TaskContextProvider({ children }: TextContextProviderProps) {
   const [state, dispatch] = useReducer(taskReducer, initialTaskState);
+  const playBeepRef = useRef<ReturnType<typeof loadBeep> | null>(null);
 
   const worker = TimerWorkerManager.getInstance();
 
+  // eslint-disable-next-line react-hooks/refs
   worker.onmessage(e => {
     const countDownSeconds = e.data;
 
     if (countDownSeconds <= 0) {
+      if (playBeepRef.current) {
+        playBeepRef.current();
+        playBeepRef.current = null;
+      }
       dispatch({ type: 'COMPLETE_TASK' });
       worker.terminate();
     } else {
@@ -34,6 +41,14 @@ export function TaskContextProvider({ children }: TextContextProviderProps) {
 
     worker.postMessage(state);
   }, [worker, state]);
+
+  useEffect(() => {
+    if (state.activeTask && playBeepRef.current === null) {
+      playBeepRef.current = loadBeep();
+    } else {
+      playBeepRef.current = null;
+    }
+  }, [state.activeTask]);
 
   return (
     <TaskContext.Provider value={{ state, dispatch }}>
