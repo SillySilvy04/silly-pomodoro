@@ -7,13 +7,15 @@ import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
 import { formatDate } from '../../utils/formatDate';
 import { getTaskStatus } from '../../utils/getTaskStatus';
 import { useEffect, useState } from 'react';
-import { TaskActionTypes } from '../../contexts/TaskContext/taskAction';
 import { sortTasks, type SortTasksOptions } from '../../utils/sortTasks';
+import { showMessage } from '../../adapters/showMessage';
 
 import styles from './style.module.css';
+import { TaskActionTypes } from '../../contexts/TaskContext/taskAction';
 
 export function History() {
   const { state, dispatch } = useTaskContext();
+  const [confirmClearHistory, setConfirmClearHistory] = useState(false);
   const hasTasks = state.tasks.length > 0;
   const [sortTaskOptions, setSortTaskOptions] = useState<SortTasksOptions>(
     () => {
@@ -37,15 +39,28 @@ export function History() {
     }));
   }, [state.tasks]);
 
-  function handleResetHistory() {
-    if (
-      !confirm(
-        'tem certeza que deseja apagar todo o histórico? esta ação não pode ser desfeita.',
-      )
-    )
-      return;
+  useEffect(() => {
+    if (!confirmClearHistory) return;
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setConfirmClearHistory(false);
     dispatch({ type: TaskActionTypes.RESET_STATE });
+  }, [confirmClearHistory, dispatch]);
+
+  useEffect(() => {
+    return () => {
+      showMessage.dismiss();
+    };
+  }, []);
+
+  function handleResetHistory() {
+    showMessage.dismiss();
+    showMessage.confirm(
+      'Tem certeza que deseja apagar todo o histórico de tarefas?',
+      confirmation => {
+        setConfirmClearHistory(confirmation);
+      },
+    );
   }
 
   function handleSortTasks({ field }: Pick<SortTasksOptions, 'field'>) {

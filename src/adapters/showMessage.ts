@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+import { Dialog } from "../components/Dialog";
 
 export const showMessage = {
     success: (msg: string) => toast.success(msg),
@@ -7,4 +8,16 @@ export const showMessage = {
     info: (msg: string) => toast.info(msg),
     warning: (msg: string) => toast.warning(msg),
     dismiss: () => toast.dismiss(),
-}
+    confirm: (data: string, onclosing:(confirmation: boolean) => void) => 
+        toast(Dialog, {
+            data,
+            onClose: confirmation => {
+                if (confirmation) return onclosing(true);
+                return onclosing(false);
+            },
+            autoClose: false,
+            closeOnClick: false,
+            closeButton: false,
+            draggable: false,
+        }),
+};

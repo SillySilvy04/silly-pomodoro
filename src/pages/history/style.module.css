@@ -4,11 +4,6 @@
   padding: 10px;
 }
 
-.buttonContainer button:hover {
-  width: 20px;
-  height: 20px;
-}
-
 .responsiveTable {
   overflow-x: auto;
   border-radius: 8px;
