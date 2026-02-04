@@ -44,3 +44,7 @@
 .thSort:hover {
   filter: brightness(80%);
 }
+
+.texto {
+  text-align: center;
+}
