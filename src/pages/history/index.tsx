@@ -28,6 +28,10 @@ export function History() {
   );
 
   useEffect(() => {
+    document.title = 'histórico - silly-pomodoro';
+  }, []);
+
+  useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setSortTaskOptions(prevState => ({
       ...prevState,
