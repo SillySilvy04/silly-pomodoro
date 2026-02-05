@@ -147,7 +147,6 @@ export function History() {
                     </tr>
                   );
                 })}
-                ;
               </tbody>
             </table>
           </div>

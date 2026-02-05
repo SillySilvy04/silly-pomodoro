@@ -6,7 +6,7 @@ export function Footer() {
     <footer className={style.footer}>
       <RouterLink href='/about-pomodoro/'> Entenda pomodoro básico</RouterLink>
       <RouterLink href='/'>
-        blablablabla &copy; {new Date().getFullYear()} - wawawa
+        <p>Feito com 💜 em Seropédica - RJ (2026)</p>
       </RouterLink>
     </footer>
   );

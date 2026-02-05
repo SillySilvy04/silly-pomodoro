@@ -21,7 +21,7 @@
 }
 
 .responsiveTable td {
-  background-color: var(--gray-800);
+  background-color: var(--background-table-row);
 }
 
 .responsiveTable th,
