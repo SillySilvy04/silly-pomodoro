@@ -1,0 +1,14 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.formRow {
+  text-align: center;
+  margin: 8px 0;
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 8px;
+}
